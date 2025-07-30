@@ -1,98 +1,104 @@
-<!DOCTYPE html>
-<html lang="ja">
+<!DOCTYPE html><html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>年齢早見チェッカー</title>
-  <meta name="description" content="家族や子どもの年齢を簡単に一覧表示。名前なしでも使える早見表アプリ。" />
-  <meta name="keywords" content="年齢早見表, 誕生日チェッカー, 家族, 子ども, 高齢者, 誕生日" />
-  <meta name="theme-color" content="#0066cc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📅年齢早見チェッカー</title>
+  <meta name="description" content="名前なしでも使える、シンプルでスマホ対応の年齢早見表アプリ。家族の生年月日を入力して年齢を一覧表示！">
+  <meta name="keywords" content="年齢, 早見表, 家族, 生年月日, 年齢一覧, 誕生日">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2LM85GJN0L"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2LM85GJN0L');
+  </script>
   <style>
     body {
-      font-family: sans-serif;
-      background: #f8f8f8;
-      margin: 0;
+      font-family: "Hiragino Kaku Gothic ProN", sans-serif;
+      background-color: #fdfdfd;
       padding: 1rem;
+      margin: 0;
+      color: #333;
+      text-align: center;
+      padding-bottom: 100px;
     }
     h1 {
-      text-align: center;
-      font-size: 1.6rem;
+      font-size: 1.8rem;
+      margin: 1rem 0;
     }
-    .info {
+    .subtitle {
       font-size: 0.9rem;
-      color: #555;
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      max-width: 400px;
-      margin: auto;
+      color: #666;
+      margin-bottom: 1.5rem;
     }
     input, button {
+      padding: 0.6rem;
       font-size: 1rem;
-      padding: 0.5rem;
-    }
-    .table-wrapper {
-      overflow-x: auto;
-      margin-top: 1rem;
+      width: 80%;
+      max-width: 400px;
+      margin: 0.5rem auto;
+      display: block;
+      border: 1px solid #ccc;
+      border-radius: 8px;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 500px;
+      margin-top: 1rem;
     }
     th, td {
       border: 1px solid #ccc;
       padding: 0.5rem;
-      text-align: center;
     }
-    #footer {
-      margin-top: 2rem;
-      text-align: center;
+    .btn {
       font-size: 0.9rem;
-      color: #555;
-      border-top: 1px solid #ccc;
-      padding-top: 1rem;
+      padding: 0.5rem 1rem;
+      margin: 0.3rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
     }
-    #footer a {
-      color: #0066cc;
+    .btn-add {
+      background-color: #2196f3;
+      color: white;
+    }
+    .btn-clear {
+      background-color: #f44336;
+      color: white;
+    }
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #ffffffee;
+      border-top: 1px solid #ccc;
+      text-align: center;
+      padding: 0.5rem 0;
+      font-size: 0.9rem;
+      backdrop-filter: blur(4px);
+      z-index: 999;
+    }
+    footer a {
+      color: #1d72b8;
       text-decoration: none;
     }
   </style>
 </head>
 <body>
-  <h1>年齢早見チェッカー</h1>
-
-  <div class="info">
-    生年月日だけでもOK。入力内容はブラウザにのみ保存されます。<br>
-    実名不要で「長女」「パパ」や空欄でも使える年齢一覧アプリです。
-  </div>
-
-  <div class="form-group">
-    <input type="text" id="name" placeholder="名前（空欄でもOK）" />
-    <input type="date" id="birthdate" />
-    <button onclick="addPerson()">追加</button>
-    <button onclick="clearAll()">全データ削除</button>
-  </div>
-
-  <div class="table-wrapper">
-    <table id="peopleTable">
-      <thead>
-        <tr><th>名前</th><th>生年月日</th><th>年齢</th><th>操作</th></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <div id="footer">
-    X <a href="https://x.com/kkp_webninja" target="_blank">@kkp_webninja</a> <br>
-    🏯 <a href="https://kkpwebninja.com" target="_blank">web忍者の本丸</a><br>
-  </div>
-
-  <script>
+  <h1>📅年齢早見チェッカー</h1>
+  <p class="subtitle">名前なしでもOK。家族の生年月日を入力するだけで年齢一覧がわかる！</p>  <input type="text" id="name" placeholder="名前（空欄でもOK）">
+  <input type="date" id="birthdate">
+  <button class="btn btn-add" onclick="addPerson()">＋ 追加する</button>
+  <button class="btn btn-clear" onclick="clearAll()">🗑️ 全て削除</button>  <table>
+    <thead>
+      <tr><th>名前</th><th>生年月日</th><th>年齢</th><th>操作</th></tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>  <footer>
+    X <a href="https://x.com/kkp_webninja" target="_blank">@kkp_webninja</a><br>
+    🏯 <a href="https://kkpwebninja.com" target="_blank">web忍者の本丸</a>
+  </footer>  <script>
     let people = JSON.parse(localStorage.getItem("familyAgeList") || "[]");
 
     function save() {
@@ -104,9 +110,7 @@
       const dob = new Date(birth);
       let age = today.getFullYear() - dob.getFullYear();
       const m = today.getMonth() - dob.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
-        age--;
-      }
+      if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
       return age;
     }
 
@@ -117,21 +121,13 @@
     }
 
     function render() {
-      const tbody = document.querySelector("#peopleTable tbody");
+      const tbody = document.getElementById("tableBody");
       tbody.innerHTML = "";
-
-      // 年齢が若い順に並び替え（生年月日が新しい順）
-      const sortedPeople = [...people].sort((a, b) => new Date(b.birth) - new Date(a.birth));
-
-      sortedPeople.forEach((p, index) => {
-        const tr = document.createElement("tr");
+      const sorted = [...people].sort((a, b) => new Date(b.birth) - new Date(a.birth));
+      sorted.forEach((p, i) => {
         const name = p.name ? p.name : "（未入力）";
-        tr.innerHTML = `
-          <td>${name}</td>
-          <td>${p.birth}</td>
-          <td>${calcAge(p.birth)} 歳 ${isBirthdayToday(p.birth) ? "🎉" : ""}</td>
-          <td><button onclick="deletePerson(${index})">削除</button></td>
-        `;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${name}</td><td>${p.birth}</td><td>${calcAge(p.birth)} 歳 ${isBirthdayToday(p.birth) ? "🎉" : ""}</td><td><button onclick="deletePerson(${i})">削除</button></td>`;
         tbody.appendChild(tr);
       });
     }
@@ -139,7 +135,7 @@
     function addPerson() {
       const name = document.getElementById("name").value.trim();
       const birth = document.getElementById("birthdate").value;
-      if (!birth) return alert("生年月日を入力してください");
+      if (!birth) return alert("生年月日を入力してください。");
       people.push({ name, birth });
       save();
       render();
@@ -156,38 +152,13 @@
     }
 
     function clearAll() {
-      if (confirm("すべてのデータを削除しますか？")) {
+      if (confirm("すべて削除しますか？")) {
         people = [];
         save();
         render();
       }
     }
 
-    // 簡易PWA対応（manifestを自動追加）
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('data:application/javascript;base64,Cg=='); // 空のService Worker（無害）
-    }
-    const manifest = {
-      name: "年齢早見チェッカー",
-      short_name: "年齢早見",
-      start_url: ".",
-      display: "standalone",
-      background_color: "#ffffff",
-      theme_color: "#0066cc",
-      icons: [
-        {
-          src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABgUlEQVRYR+2XwUoDQRRFz8zqFUKgV6hUqBWqFaoVioVWoVaoFKgXICyIxaAiNHRw+LDDHd2cyM8ODbnQ3ZgY7+Th3zzgS3ExAHLAA3gYhrAF/AdZlBN6AcuWbcU3gHPgBBiUaeoTVBViAi4B2MHsE4Y3gecFQjcxS+klxNMeHPwh9vljGGsYXzDK6zh3aYCzjETzj5lwAp7TqYkBToQZ8SAReiKnLsGCXsBh5H2fEDJeER6TEFZkbz3GCXTQ5ITsXv1v3Hi7gf+Px+jkDc5ggXkF2YmTYCLHqVuvAvcrwAF+oI/51O0Qx4+SvqVepHwF/JR+hI1IUx9YDcFqHvc0O7RfdUwChOmbgAf8BRoI+K+d4TZ8AAAAASUVORK5CYII=",
-          sizes: "192x192",
-          type: "image/png"
-        }
-      ]
-    };
-    const link = document.createElement("link");
-    link.rel = "manifest";
-    link.href = "data:application/manifest+json," + encodeURIComponent(JSON.stringify(manifest));
-    document.head.appendChild(link);
-
     render();
-  </script>
-</body>
+  </script></body>
 </html>
