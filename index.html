@@ -94,7 +94,7 @@
 </head>
 <body>
   <h1>📘みんなの年齢帳</h1>
-  <p class="subtitle">生年月日を入力するだけで年齢一覧がわかる！</p>  <input type="text" id="name" placeholder="名前（空欄でもOK）">
+  <p class="subtitle">名前なしでもOK。家族の生年月日を入力するだけで年齢一覧がわかる！</p>  <input type="text" id="name" placeholder="名前（空欄でもOK）">
   <input type="date" id="birthdate">
   <div class="btn-wrapper">
     <button class="btn btn-add" onclick="addPerson()">＋ 追加する</button>
@@ -134,10 +134,11 @@
       const tbody = document.getElementById("tableBody");
       tbody.innerHTML = "";
       const sorted = [...people].sort((a, b) => new Date(b.birth) - new Date(a.birth));
-      sorted.forEach((p, i) => {
+      sorted.forEach((p) => {
         const name = p.name ? p.name : "（未入力）";
+        const originalIndex = people.findIndex(item => item.birth === p.birth && item.name === p.name);
         const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${name}</td><td>${p.birth}</td><td>${calcAge(p.birth)} 歳 ${isBirthdayToday(p.birth) ? "🎉" : ""}</td><td><button onclick="deletePerson(${i})">削除</button></td>`;
+        tr.innerHTML = `<td>${name}</td><td>${p.birth}</td><td>${calcAge(p.birth)} 歳 ${isBirthdayToday(p.birth) ? "🎉" : ""}</td><td><button onclick="deletePerson(${originalIndex})">削除</button></td>`;
         tbody.appendChild(tr);
       });
     }
